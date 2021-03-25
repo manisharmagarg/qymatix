@@ -1,0 +1,69 @@
+from api.infrastructure.mysql.orm import autogen_entities
+import pandas as pd
+import os
+from numpy import nan
+import datetime
+from api.importer.importer.infrastructure.write.mysql.mysql_connection import MySqlConncetion
+from api.importer.importer.infrastructure.mappings.clarus_mappings import ClarusMappings
+from api.importer.importer.application.import_product_class_command import ImportProductClassCommand
+from api.importer.importer.application.bus import Bus
+from api.importer.importer.domain.product_class import ProductClass
+
+
+
+class UploadClarusProductClass():
+
+    DATABASE = 'data_clarus___films_com'
+
+    def __init__(self, filename):
+        super().__init__()
+
+        connection = MySqlConncetion(self.DATABASE)
+        self.session = connection.session()
+
+        self.filename = filename
+
+        self.mappings = ClarusMappings()
+
+        command = ImportProductClassCommand(
+            filename=self.filename,
+            mappings=self.mappings.mappings()
+        )
+
+        self.bus = Bus(command)
+
+        # This could be replaced by an event
+        self.data = self.bus.dispatch()
+
+
+    def upload(self):
+        '''
+        '''
+        for index, row in self.data.iterrows():
+            product_class_name = row['product class']
+
+            if product_class_name is not nan:
+
+                product_class = ProductClass(product_class_name)
+
+                query = self.session.query(autogen_entities.ProductClass)\
+                                        .filter_by(name=product_class_name)\
+                                        .first()
+
+                if query == None:
+                    new = autogen_entities.ProductClass(
+                                        name=product_class.name,
+                                        description='',
+                                        active=1,
+                                        created=datetime.datetime.now()
+                                    )
+
+                    self.session.add(new)
+                    self.session.commit()
+                    print(product_class.name)
+
+
+filename = '/Users/martin/Documents/cui/accounts/Clarus/ExcelExport_tblFaktStd_201909020919.xlsx'
+
+uploader = UploadClarusProductClass(filename)
+uploader.upload()

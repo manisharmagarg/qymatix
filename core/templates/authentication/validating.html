@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="refresh" content="5;url=https://www.qymatix.com/webapp/v1.0/"> 
+
+    <script src="{% static 'v1.0/app/bower_components/webcomponentsjs/webcomponents-lite.js' %}"></script>
+
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+      <!-- build:css styles/main.css -->
+      <link rel="stylesheet" href="{% static 'v1.0/app/styles/main.css' %}">
+      <link rel="stylesheet" href="{% static 'v1.0/app/styles/flexbox.css' %}">
+
+      <title>Main View | Qymatix</title>
+
+    <link rel="import" href="{% static 'v1.0/app/bower_components/polymer/polymer.html' %}">
+    <link rel="import" href="{% static 'v1.0/app/elements/elements.html' %}">
+    <link rel="import" href="{% static 'v1.0/app/styles/shared-styles.html' %}">
+    <link rel="import" href="{% static 'v1.0/app/elements/qy-auth/qy-auth-validating.html' %}">
+
+  <style include="shared-styles">
+      .content {
+        height: 100%;
+        background: -moz-linear-gradient(45deg,  #5899d4 0%, #86f4f9 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(45deg,  #5899d4 0%,#86f4f9 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(45deg,  #5899d4 0%,#86f4f9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5899d4', endColorstr='#86f4f9',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+        font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        color: #333;
+        overflow: hidden;
+      }
+      .logo
+      {
+        width:100%;
+        text-align: center;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <div class="content">
+        <qy-auth-validating></qy-auth-validating>
+    </div>
+  </body>
+</html>

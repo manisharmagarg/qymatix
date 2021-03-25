@@ -1,0 +1,162 @@
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+<dom-module id="qy-auth-login-django">
+  <template>
+
+    <style include="shared-styles">
+      :host {
+
+        --paper-input-container-input-color:#fff;
+        --paper-input-container-label-floating:{
+        font-size: 20px;
+         }
+      --paper-input-container-label:
+         {
+          padding-left: 5px;
+         }
+      --paper-input-container-input:
+       {
+         padding-left: 5px;
+
+       }
+      }
+      paper-button{
+        background-color: #009900;
+        background-color: var(--paper-green-500);
+        padding:7px !important;
+        text-transform:none !important;
+        font-size: 15px;
+        width: 120px;
+        height: 35px;
+        text-align: center;
+      }
+      paper-material{
+        padding:20px;
+        margin-top:120px;
+        background-color: #37474f;
+        color:#fff;
+        text-align: left;
+      }
+
+      .login
+      {
+        margin-top:10px;
+        width:100%;
+        text-align: right;
+      }
+      .social
+      {
+        text-align: center;
+      }
+      .social a{
+        display: inline-block;
+        color:#fff;
+        text-decoration: none;
+        background-color: #eee;
+        padding:11px;
+        border-radius: 3px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      .linkedin
+      {
+        background-color:#0077b5 !important;
+        margin: 10px;
+      }
+      .xing{
+        background-color:#cfdc00 !important;
+        margin: 10px;
+      }
+      .sep-line {
+        width: 100%;
+        border-bottom: 1px solid #fff;
+        line-height: .1em;
+        color:#fff;
+        margin: 20px 0;
+
+      }
+      .loading{
+        font-size: 20px;
+        color:var(--green-color);
+        margin-top:20px;
+        display: none;
+      }
+      .error{
+        font-size:13px;
+        color:red;
+        margin-top:10px;
+        text-align: center;
+      }
+      .sep-line span{
+        background-color: #37474f;
+        padding: 0 10px;
+      }
+      .small-icon{
+        margin-bottom: 2px;
+        --iron-icon-width: 20px;
+        --iron-icon-height: 20px;
+      }
+      button {
+        -webkit-appearance: none;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        width: 120px;
+        height: 50px;
+        text-align: center;
+      }
+    </style>
+
+    <div class="row center-xs">
+      <div class="col-xs-4">
+
+        <paper-material>
+
+
+          <div class="logo"><a href="https://www.qymatix.de" target="_blank"> <img  src="../../images/logo.png" alt="Qymatix"/></a></div>
+
+          <paper-input name="username" label="Email Address" id="username" value="{{email}}" required>
+            <iron-icon icon="mail" prefix class="small-icon"></iron-icon>
+          </paper-input>
+
+          <paper-input name="password" label="Password" id="password" value="{{password}}" type="password" required>
+            <iron-icon icon="lock" prefix class="small-icon"></iron-icon>
+          </paper-input>
+
+          <div class="login">
+            <button type="submit" class="btn btn-primary btn-block btn-large">
+              <paper-button raised noink id="btnLogin">Login</paper-button>
+            </button>
+          </div>
+
+          <div class="error">{{message}}</div>
+
+          <!--
+          <div class="social">
+            <div class="sep-line"><span>OR</span></div>
+            <div class="row">
+              <div class="col-xs-12 center-xs">
+                <a class="linkedin" href="{% url 'social:begin' backend='linkedin-oauth2' %}"><i class="fa fa-linkedin"></i>Login with Linkedin</a> 
+                <a class="xing" href="https://www.qymatix.com/webapp/loginXing"><i class="fa fa-xing"></i> Login with Xing</a>
+              </div>
+            </div>
+            <div class="loading" id="loading"><i class='fa fa-spinner fa-spin'></i>&nbsp;Please wait...</div>
+          </div>
+          -->
+
+        </paper-material>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'qy-auth-login-django',
+      });
+    })();
+  </script>
+</dom-module>

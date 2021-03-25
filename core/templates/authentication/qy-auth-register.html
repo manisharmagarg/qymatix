@@ -1,0 +1,155 @@
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+<dom-module id="qy-auth-register">
+  <template>
+
+    <style include="shared-styles">
+      :host {
+
+        --paper-input-container-input-color:#fff;
+      --paper-input-container-label-floating:{
+         font-size: 20px;
+       }
+      --paper-input-container-label:
+       {
+         padding-left: 5px;
+       }
+      --paper-input-container-input:
+       {
+         padding-left: 5px;
+
+       }
+      }
+      paper-button{
+        background-color: var(--primary-color);
+        padding:7px !important;
+        text-transform:none !important;
+      }
+      paper-material{
+        padding:20px;
+        margin-top:120px;
+        background-color: #37474f;
+        color:#fff;
+        text-align: left;
+      }
+
+      .login
+      {
+        margin-top:10px;
+        width:100%;
+        text-align: right;
+      }
+      .social
+      {
+        text-align: center;
+      }
+      .social a{
+        display: inline-block;
+        color:#fff;
+        text-decoration: none;
+        background-color: #eee;
+        padding:10px;
+        border-radius: 3px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      .linkedin
+      {
+        background-color:#0077b5 !important;
+      }
+      .xing{
+
+        background-color:#cfdc00 !important;
+        margin-left: 10px;
+      }
+      .sep-line {
+        width: 100%;
+        border-bottom: 1px solid #fff;
+        line-height: .1em;
+        color:#fff;
+        margin: 20px 0;
+
+      }
+      .sep-line span{
+        background-color: #37474f;
+        padding: 0 10px;
+      }
+      .small-icon{
+        margin-bottom: 2px;
+        --iron-icon-width: 20px;
+        --iron-icon-height: 20px;
+      }
+    </style>
+    <div class="row center-xs">
+      <div class="col-xs-4">
+
+        <paper-material>
+
+          <div class="logo"><img  src="../../images/logo.png" alt="Qymatix"/></div>
+          <paper-input label="First Name" id="fname">
+            <iron-icon icon="social:person" prefix class="small-icon"></iron-icon>
+          </paper-input>
+          <paper-input label="Last Name" id="lname">
+            <iron-icon icon="social:person" prefix class="small-icon"></iron-icon>
+          </paper-input>
+          <paper-input label="Email Address" id="email">
+            <iron-icon icon="mail" prefix class="small-icon"></iron-icon>
+          </paper-input>
+          <paper-input label="Password" id="password">
+            <iron-icon icon="lock" prefix class="small-icon"></iron-icon>
+          </paper-input>
+          <paper-input label="Confirm Password" id="confPassword">
+            <iron-icon icon="lock" prefix class="small-icon"></iron-icon>
+          </paper-input>
+          <div class="login">
+            <paper-button raised noink on-click="login" >Register</paper-button>
+          </div>
+          <div class="social">
+            <div class="sep-line"><span>OR</span></div>
+            <div class="row">
+              <div class="col-xs-12 center-xs">
+                <a class="linkedin" onclick="linkedIn()"><i class="fa fa-linkedin"></i> Register with Linkedin</a>
+                <a class="xing" onclick="xing()"><i class="fa fa-xing"></i> Register with Xing</a>
+              </div>
+            </div>
+          </div>
+        </paper-material>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+
+    function linkedIn() {
+      IN.UI.Authorize().place();
+      IN.Event.on(IN, "auth", function () { onLogin(); });
+      IN.Event.on(IN, "logout", function () { onLogout(); });
+    }
+
+    function onLogin() {
+      IN.API.Profile("me").fields("id", "first-name", "last-name", "email-address","picture-url","headline").result(ShowProfileData);
+    }
+    function ShowProfileData(profiles) {
+      member = profiles.values[0];
+      alert('Linkedin Success, send data to API and get token back');
+    }
+    function xing(){
+      alert('add xing login')
+    }
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'qy-auth-register',
+        properties: {},
+        ready: function() {
+
+        },
+        login:function(){
+          alert('call api and get token');
+        }
+      });
+    })();
+  </script>
+</dom-module>

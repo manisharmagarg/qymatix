@@ -1,0 +1,204 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Uploader Qymatix</title>
+	<link href="{% static 'webapp/css/index.css' %}" rel="stylesheet" >
+	<style>
+
+		#linkbox {
+					position:relative;
+					top:80%;
+					left:50%;
+					margin: -250px 0 0 -250px;
+					font-family: "open_sanslight";
+					display:table-cell;
+					vertical-align: middle;
+					text-align:left;
+			color: rgb(122,148,166);
+
+		}
+
+		#circle {
+			position:absolute;
+			top:50%;
+			left:50%;
+			margin: -250px 0 0 -250px;
+			width: 500px;
+			height: 500px;
+			-webkit-border-radius: 50%;
+			-moz-border-radius: 50%;
+			border-radius: 50%;
+			font-family: "open_sanslight";
+			border: 2px dotted rgb(0,115,174);
+			display:table-cell;
+			vertical-align: middle;
+			text-align:center;
+			color: rgb(122,148,166);
+		}
+
+		#circle form{
+			position:relative;
+			left: 0px;
+			height: 500px;
+			width:500px;
+			display:table-cell;
+			vertical-align:middle;
+		}
+
+		.dz-message{
+
+		}
+
+		.dz-error-mark, .dz-details, .dz-success-mark {
+			display:none;
+		}
+	</style>
+
+
+        <script src="{% static 'webapp/js/lib/jquery-1.11.1.min.js' %}"></script>
+	<script src="{% static 'webapp/js/lib/jquery.cookie.js' %}"></script>
+        <!--<script src="{% static 'webapp/js/index.js' %}"></script>-->
+	<script src="{% static 'webapp/js/lib/dropzone.js' %}"></script>
+
+	<script>
+
+        var csrftoken = $.cookie('csrftoken');
+        $.ajaxSetup({
+                    headers: { "X-CSRFToken": csrftoken}
+                    });
+
+
+	Dropzone.options.myAwesomeDropzone = {
+		paramName: "file", // The name that will be used to transfer the file
+		acceptedFiles:'application/xls,application/xlsx/,application/csv,application/ods,.csv,.xls,.xlsx,.ods',
+		maxFilesize: 2, // MB
+		accept: function(file, done) {
+			if (file.name == "justinbieber.jpg") {
+				done("Naha, you don't.");
+			}
+			else { done(); }
+		},
+
+		clickable: false,
+		init: function() {
+
+			this.on('dragover', function (ev) {
+				document.getElementById('circle').style.border = '1px solid rgb(0,115,174)';
+			} );
+
+			this.on('dragleave', function (ev) {
+				document.getElementById('circle').style.border = '2px dotted rgb(0,115,174)';
+			} );
+
+			this.on('drop', function (ev) {
+				//document.getElementById('my-awesome-dropzone').innerHTML = 'Thank you!';
+				document.getElementById('my-awesome-dropzone').innerHTML = '<img src="{% static 'webapp/img/loading.gif' %}" height=70 width=70>'
+				document.getElementById('circle').style.border = 'none';
+				document.getElementById('circle').style.backgroundColor = 'rgb(228,239,244)';
+
+			} );
+
+			this.on("addedfile", function(file) {
+				console.log('addedfile');
+			});
+
+			this.on('sending', function (file, xhr, formdata) {
+				console.log('sending');
+			} );
+
+
+
+			//this.on('uploadprogress', function (file, progress, bytesSent) {
+			//	console.log('uploadprogress');
+			//
+			//	document.getElementById('my-awesome-dropzone').innerHTML = "Uploading&hellip;<br/>"+progress+"%";
+			//} );
+
+			this.on('success', function (file, response) {
+				console.log('success');
+
+                        //success: function(response){
+                        //// redirect to the required url
+                        //window.location = response;}
+                        window.location = response;
+
+                                //myAwesomeDropzone.processQueue(); // Tell Dropzone process all queued files.
+
+			} );
+
+			this.on('complete', function (file, response) {
+				console.log('complete using drop_upload');
+
+				document.getElementById('my-awesome-dropzone').innerHTML = 'Done!';
+				//this.disable();
+
+				// circle soll schrumpfen, danach init critters.
+
+
+			} );
+
+			this.on('error', function (file, err) {
+				console.log('uploadprogress'+err);
+				document.getElementById('my-awesome-dropzone').innerHTML = "Sorry, but&hellip;<br/>"+err;
+
+			} );
+
+			/*
+			this.on('canceled', function (file, response) { swal('error'); } );
+			this.on('reset', function (file, response) { swal('error'); } );
+			*/
+                return false;
+		}
+	};
+
+	</script>
+</head>
+<body>
+
+<div id="circle">
+    <form method='post' action="upload" class="dropzone" id="my-awesome-dropzone" enctype="multipart/form-data">
+        <div class="fallback">
+            <input name="file" type="file" multiple />
+        </div>
+    </form>
+</div>
+
+
+
+<div class="dz-preview dz-file-preview">
+    <div class="dz-details">
+        <div class="dz-filename"><span data-dz-name></span></div>
+        <div class="dz-size" data-dz-size></div>
+        <img data-dz-thumbnail />
+    </div>
+    <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+    <div class="dz-success-mark"><span>✔</span></div>
+    <div class="dz-error-mark"><span>✘</span></div>
+    <div class="dz-error-message"><span data-dz-errormessage></span></div>
+</div>
+
+<div id="linkbox">
+    <p class="lead text-info">
+        <strong>Download Qymatix standard sales data template</strong>
+    </p>
+    <p>
+        <a class="btn btn-lg btn-warning" href="https://qymatix.de/assets/files/Data_Template_Qymatix_250614.xls">TEMPLATE</a>
+    </p>
+</div>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+</body>
+</html>
